@@ -31,7 +31,7 @@ jobs:
                 ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
                 ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
             - |
-                SVCS_NAME=$APP_NAME_svcs
+                SVCS_NAME=$APP_NAME"_svcs"
                 export APP_IMG=$(shipctl get_resource_version_key "node_app_img_dh" sourceName)
                 export APP_IMG_TAG=$(shipctl get_resource_version_key "node_app_img_dh" "versionName")
             - |
