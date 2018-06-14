@@ -1,0 +1,10 @@
+{
+    "cluster": "deploy-ecs-basic",
+    "serviceName": "${JOB_NAME}",
+    "taskDefinition": "",
+    "desiredCount": "${MYCOUNTPARAMS_DESIREDCOUNT}",
+    "deploymentConfiguration": {
+        "maximumPercent": 0,
+        "minimumHealthyPercent": 0
+    }
+}
