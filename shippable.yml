@@ -26,7 +26,8 @@ jobs:
                aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
                aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
                aws configure set region "$ECS_CLUSTER_REGION"
-               aws ecs list-clusters
+            - aws ec2 describe-instances
+#               aws ecs list-clusters
             - pushd $(shipctl get_resource_state "cd_ecs_cli_repo")
 #
 #        - script: shippable_replace ${DEPLOYECSUNMANAGEDREPO_STATE}/taskDefinitions/sampleTaskDef.json
