@@ -23,6 +23,7 @@ jobs:
                 - APP_NAME: "app_cli"
                 - REPLICAS: 1
                 - ENVIRONMENT: "test"
+                - FAMILY: "app_cli"
           script:
             - |
                 AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
@@ -43,6 +44,6 @@ jobs:
             - |
                 shipctl replace templates/service.json templates/task.json
                 aws ecs register-task-definition --cli-input-json file://$REPO_PATH/templates/task.json > output.json
-                REVISION=$(cat output.json | shipctl get_json_value 'taskDefinition.revision')
+                REVISION=$(shipctl get_json_value output.json 'taskDefinition.revision')
                 echo "revision is $REVISION"
-#        - script: aws ecs update-service --cluster deploy-ecs-basic --service ${JOB_NAME} --task-definition shippable:${REVISION} --desired-count 1
+            - aws ecs update-service  --task-definition $FAMILY:$REVISION

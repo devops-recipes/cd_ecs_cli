@@ -1,5 +1,5 @@
 {
-  "family": "dr",
+  "family": "${FAMILY}",
   "containerDefinitions": [
     {
       "name": "${APP_NAME}",
