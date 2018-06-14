@@ -16,24 +16,33 @@ jobs:
       - IN: aws_ecs_cluster # defined here https://github.com/devops-recipes/prov_aws_ecs_terraform/blob/master/shippable.yml
         switch: off
       - TASK:
+          name: deploy_app
+          runtime:
+            options:
+              env:
+                - APP_NAME: "app_cli"
+                - REPLICAS: 1
+                - ENVIRONMENT: "test"
           script:
             - |
-               AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
-               AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ecs_cluster "secretKey")
-               ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
-               ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
+                AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
+                AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ecs_cluster "secretKey")
+                ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
+                ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
             - |
-               echo $AWS_ACCESS_KEY_ID
-               echo $ECS_CLUSTER_REGION
-               aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
-               aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
-               aws configure set region "$ECS_CLUSTER_REGION"
-            - aws ec2 describe-instances
-#               aws ecs list-clusters
-            - pushd $(shipctl get_resource_state "cd_ecs_cli_repo")
-#
-#        - script: shippable_replace ${DEPLOYECSUNMANAGEDREPO_STATE}/taskDefinitions/sampleTaskDef.json
-#        - script: aws ecs register-task-definition --cli-input-json file://${DEPLOYECSUNMANAGEDREPO_STATE}/taskDefinitions/sampleTaskDef.json > output.json
-#        - script: REVISION=$(cat output.json | jq '.taskDefinition.revision')
-#        - script: echo "revision is $REVISION"
+                APP_IMG=$(shipctl get_resource_version_key "node_app_img_dh" sourceName)
+                APP_IMG_TAG=$(shipctl get_resource_version_key "node_app_img_dh" "versionName")
+            - |
+                aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+                aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+                aws configure set region "$ECS_CLUSTER_REGION"
+            - aws ecs list-clusters
+            - |
+                REPO_PATH=$(shipctl get_resource_state "cd_ecs_cli_repo")
+                pushd $REPO_PATH
+            - |
+                shipctl replace templates/service.json templates/task.json
+                aws ecs register-task-definition --cli-input-json file://$REPO_PATH/template/task.json > output.json
+                REVISION=$(cat output.json | jq '.taskDefinition.revision')
+                echo "revision is $REVISION"
 #        - script: aws ecs update-service --cluster deploy-ecs-basic --service ${JOB_NAME} --task-definition shippable:${REVISION} --desired-count 1

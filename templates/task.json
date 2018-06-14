@@ -1,24 +1,23 @@
 {
-    "family": "shippable",
-    "containerDefinitions": [
+  "family": "shippable",
+  "containerDefinitions": [
+    {
+      "name": "${APP_NAME}",
+      "image": "${APP_IMG}/${APP_IMG_TAG}",
+      "portMappings": [
         {
-            "name": "node-app",
-            "image": "${DEPLOYECSUNMANAGEDIMAGE_SOURCENAME}/${DEPLOYECSUNMANAGEDIMAGE_VERSIONNAME}",
-
-            "portMappings": [
-                {
-                    "containerPort": 80,
-                    "hostPort": 80
-                }
-            ],
-            "memory": 100,
-            "essential": true,
-            "environment": [
-                {
-                    "name": "ENVIRONMENT",
-                    "value": "unmanaged"
-                }
-            ]
+          "containerPort": 80,
+          "hostPort": 80
         }
-    ]
+      ],
+      "memory": 100,
+      "essential": true,
+      "environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "${ENVIRONMENT}"
+        }
+      ]
+    }
+  ]
 }
