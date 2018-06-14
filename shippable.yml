@@ -13,7 +13,7 @@ jobs:
     steps:
       - IN: cd_ecs_cli_repo
       - IN: node_app_img_dh # defined here https://github.com/devops-recipes/node_app/blob/master/shippable.yml
-      - IN: aws_ecs_cluster
+      - IN: aws_ecs_cluster # defined here https://github.com/devops-recipes/prov_aws_ecs_terraform/blob/master/shippable.yml
         switch: off
       - TASK:
           script:
@@ -23,8 +23,8 @@ jobs:
                ECS_CLUSTER=$(shipctl get_integration_resource_field "aws_ecs_cluster" "sourceName")
                ECS_CLUSTER_REGION=$(shipctl get_integration_resource_field "aws_ecs_cluster" "region")
             - |
-               aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
-               aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
+               aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+               aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
                aws configure set region "$ECS_CLUSTER_REGION"
                aws ecs list-clusters
             - pushd $(shipctl get_resource_state "cd_ecs_cli_repo")
