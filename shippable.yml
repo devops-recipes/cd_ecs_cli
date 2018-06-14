@@ -26,12 +26,12 @@ jobs:
                 - FAMILY: "app_cli"
           script:
             - |
-                SVCS_NAME=$APP_NAME_svcs
                 AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
                 AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ecs_cluster "secretKey")
                 ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
                 ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
             - |
+                SVCS_NAME=$APP_NAME_svcs
                 export APP_IMG=$(shipctl get_resource_version_key "node_app_img_dh" sourceName)
                 export APP_IMG_TAG=$(shipctl get_resource_version_key "node_app_img_dh" "versionName")
             - |
@@ -47,6 +47,7 @@ jobs:
                 REVISION=$(aws ecs register-task-definition --cli-input-json file://$REPO_PATH/templates/task.json --output json --query taskDefinition.revision > output.json)
                 echo "revision is $REVISION"
             - |
+                echo $SVCS_NAME
                 EXISTS=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $SVCS_NAME --output json --query failures[0].reason)
                 if [ $EXISTS == "MISSING" ]
                 then
