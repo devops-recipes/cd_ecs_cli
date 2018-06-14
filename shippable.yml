@@ -42,7 +42,7 @@ jobs:
                 pushd $REPO_PATH
             - |
                 shipctl replace templates/service.json templates/task.json
-                aws ecs register-task-definition --cli-input-json file://$REPO_PATH/template/task.json > output.json
+                aws ecs register-task-definition --cli-input-json file://${REPO_PATH}/template/task.json > output.json
                 REVISION=$(cat output.json | jq '.taskDefinition.revision')
                 echo "revision is $REVISION"
 #        - script: aws ecs update-service --cluster deploy-ecs-basic --service ${JOB_NAME} --task-definition shippable:${REVISION} --desired-count 1
