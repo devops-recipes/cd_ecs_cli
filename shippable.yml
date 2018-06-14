@@ -28,16 +28,12 @@ jobs:
             - |
                 AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
                 AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ecs_cluster "secretKey")
-                ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
                 ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
+                export ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
             - |
-                APP_IMG=$(shipctl get_resource_version_key "node_app_img_dh" sourceName)
-                APP_IMG_TAG=$(shipctl get_resource_version_key "node_app_img_dh" "versionName")
+                export APP_IMG=$(shipctl get_resource_version_key "node_app_img_dh" sourceName)
+                export APP_IMG_TAG=$(shipctl get_resource_version_key "node_app_img_dh" "versionName")
             - |
-                echo $ECS_CLUSTER
-                echo $ECS_CLUSTER_REGION
-                echo $APP_IMG
-                echo $APP_IMG_TAG
                 aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
                 aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
                 aws configure set region "$ECS_CLUSTER_REGION"
@@ -47,8 +43,6 @@ jobs:
                 pushd $REPO_PATH
             - |
                 shipctl replace templates/service.json templates/task.json
-                cat templates/service.json
-                cat templates/task.json
                 aws ecs register-task-definition --cli-input-json file://$REPO_PATH/templates/task.json > output.json
                 REVISION=$(shipctl get_json_value output.json 'taskDefinition.revision')
                 echo "revision is $REVISION"
