@@ -1,6 +1,5 @@
 {
   "cluster": "${ECS_CLUSTER}",
-  "serviceName": "${APP_NAME}_svcs",
   "desiredCount": "${REPLICAS}",
   "deploymentConfiguration": {
     "maximumPercent": 0,
