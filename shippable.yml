@@ -46,4 +46,5 @@ jobs:
                 aws ecs register-task-definition --cli-input-json file://$REPO_PATH/templates/task.json > output.json
                 REVISION=$(shipctl get_json_value output.json 'taskDefinition.revision')
                 echo "revision is $REVISION"
-            - aws ecs update-service --service ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION
+#            - aws ecs update-service --service ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION
+            - aws ecs create-service --service ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION
