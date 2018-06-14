@@ -1,5 +1,4 @@
 {
-  "cluster": "${ECS_CLUSTER}",
   "desiredCount": "${REPLICAS}",
   "deploymentConfiguration": {
     "maximumPercent": 0,
