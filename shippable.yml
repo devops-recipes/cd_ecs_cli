@@ -7,15 +7,6 @@ resources:
       sourceName: "devops-recipes/cd_ecs_cli"
       branch: master
 
-# Cluster info output
-  - name: aws_ecs_cluster
-    type: cluster
-    integration: "drship_aws"
-    pointer:
-      sourceName : "tbd" #name of the cluster to which we are deploying
-      region: "tbd"
-
-
 jobs:
   - name: deploy_ecs_cli
     type: runSh
