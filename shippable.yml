@@ -20,8 +20,8 @@ jobs:
             - |
                AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ecs_cluster "accessKey")
                AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ecs_cluster "secretKey")
-               ECS_CLUSTER=$(shipctl get_integration_resource_field "aws_ecs_cluster" "sourceName")
-               ECS_CLUSTER_REGION=$(shipctl get_integration_resource_field "aws_ecs_cluster" "region")
+               ECS_CLUSTER=$(shipctl get_resource_version_key "aws_ecs_cluster" "sourceName")
+               ECS_CLUSTER_REGION=$(shipctl get_resource_version_key "aws_ecs_cluster" "region")
             - |
                echo $AWS_ACCESS_KEY_ID
                echo $ECS_CLUSTER_REGION
