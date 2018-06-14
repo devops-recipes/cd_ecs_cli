@@ -46,5 +46,11 @@ jobs:
                 aws ecs register-task-definition --cli-input-json file://$REPO_PATH/templates/task.json > output.json
                 REVISION=$(shipctl get_json_value output.json 'taskDefinition.revision')
                 echo "revision is $REVISION"
-#            - aws ecs update-service --service ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION
-            - aws ecs create-service --service-name ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION --desired-count $REPLICAS
+            -
+              EXISTS=$(aws ecs describe-services --cluster cluster --services app_cli_svcs1 --output json --query failures[0].reason)
+              if [ $EXISTS == "MISSING" ]
+              then
+                aws ecs create-service --service-name ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION --desired-count $REPLICAS;
+              else
+                aws ecs update-service --service ${APP_NAME}_svcs --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION;
+              fi
