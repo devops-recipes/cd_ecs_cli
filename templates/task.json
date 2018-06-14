@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "${APP_NAME}",
-      "image": "${APP_IMG}/${APP_IMG_TAG}",
+      "image": "${APP_IMG}:${APP_IMG_TAG}",
       "portMappings": [
         {
           "containerPort": 80,
