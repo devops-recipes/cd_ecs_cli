@@ -54,5 +54,3 @@ jobs:
                 else
                   aws ecs update-service --service $SVCS_NAME --cluster $ECS_CLUSTER --task-definition $FAMILY:$REVISION;
                 fi
-
-#                REVISION=$(shipctl get_json_value output.json 'taskDefinition.revision')
