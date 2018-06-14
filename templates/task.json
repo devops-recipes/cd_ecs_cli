@@ -1,5 +1,5 @@
 {
-  "family": "shippable",
+  "family": "dr",
   "containerDefinitions": [
     {
       "name": "${APP_NAME}",
