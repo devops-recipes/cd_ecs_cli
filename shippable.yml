@@ -12,7 +12,7 @@ jobs:
     type: runSh
     steps:
       - IN: cd_ecs_cli_repo
-      - IN: node_app_img_dh # defined here https://github.com/devops-recipes/node_app/blob/master/shippable.yml
+      - IN: node_app_img_jf # defined here https://github.com/devops-recipes/node_app/blob/master/shippable.yml
       - IN: aws_ecs_cluster # defined here https://github.com/devops-recipes/prov_aws_ecs_terraform/blob/master/shippable.yml
         switch: off
       - TASK:
