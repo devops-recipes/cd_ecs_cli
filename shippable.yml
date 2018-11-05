@@ -2,7 +2,7 @@ resources:
 # Templates Files repo
   - name: cd_ecs_cli_repo
     type: gitRepo
-    integration: "drship_github"
+    integration: "dr_gh"
     versionTemplate:
       sourceName: "devops-recipes/cd_ecs_cli"
       branch: master
